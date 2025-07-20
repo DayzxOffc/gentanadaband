@@ -1,1 +1,466 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Genta Nada Band</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: #1a1a1a; /* Onyx */
+            color: #E0E0E0; /* Platinum */
+        }
+        .bg-onyx {
+            background-color: #1a1a1a;
+        }
+        .text-platinum {
+            color: #E0E0E0;
+        }
+        .text-gold {
+            color: #FFD700;
+        }
+        .bg-gradient-to-r-custom {
+            background-image: linear-gradient(to right, #4A4A4A, #1a1a1a); /* Gray to Onyx */
+        }
+        .navbar {
+            background-color: rgba(26, 26, 26, 0.9); /* Semi-transparent onyx */
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        .nav-item {
+            position: relative;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background-color: #FFD700;
+            left: 50%;
+            bottom: 0;
+            transform: translateX(-50%);
+            transition: width 0.3s ease;
+        }
+        .nav-item:hover::after,
+        .nav-item.active::after {
+            width: 100%;
+        }
+        .nav-item:hover,
+        .nav-item.active {
+            color: #FFD700;
+        }
+        .section {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .section.active {
+            display: block;
+            opacity: 1;
+        }
+        .btn-gold {
+            background-color: #FFD700;
+            color: #1a1a1a;
+            padding: 0.75rem 1.5rem;
+            border-radius: 9999px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+        .btn-gold:hover {
+            background-color: #E6B800;
+        }
+        .animate-from-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+        .animate-from-left.show {
+            opacity: 1;
+            transform: translateX(0);
+        }
 
+        /* Intro Screen Styles */
+        #introScreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 1000;
+            transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+        }
+        #introScreen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .logo-animation {
+            opacity: 0;
+            transform: scale(0.5);
+            animation: appearScale 2s forwards;
+            animation-delay: 0.5s;
+        }
+        @keyframes appearScale {
+            0% { opacity: 0; transform: scale(0.5); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+        .text-fade-in {
+            opacity: 0;
+            animation: fadeIn 1.5s forwards;
+            animation-delay: 2.5s;
+        }
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+        .skip-button {
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+            animation-delay: 4s;
+            margin-top: 20px;
+        }
+
+        #mainWebsite {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s ease-in, visibility 1s ease-in;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        #mainWebsite.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .content-area {
+            flex-grow: 1;
+        }
+    </style>
+</head>
+<body class="bg-onyx text-platinum relative">
+
+    <div id="introScreen">
+        <img src="https://i.ibb.co/bF0R7fJ/logogn.png" alt="Genta Nada Logo" class="w-48 h-48 logo-animation">
+        <p class="text-platinum text-2xl mt-4 text-fade-in">Genta Nada Band</p>
+        <button onclick="skipIntro()" class="skip-button btn-gold mt-6">Skip Intro</button>
+    </div>
+
+    <div id="mainWebsite" class="hidden">
+        <nav class="navbar p-4 fixed w-full z-50 shadow-lg">
+            <div class="container mx-auto flex justify-between items-center">
+                <a href="#home" class="text-gold text-2xl font-bold">Genta Nada</a>
+                <div class="space-x-4 flex">
+                    <a data-section="home" class="nav-item">Home</a>
+                    <a data-section="about" class="nav-item">About</a>
+                    <a data-section="music" class="nav-item">Music</a>
+                    <a data-section="gallery" class="nav-item">Gallery</a>
+                    <a data-section="contact" class="nav-item">Contact</a>
+                </div>
+            </div>
+        </nav>
+
+        <div class="content-area pt-16">
+            <section id="home" class="section h-screen flex flex-col justify-center items-center text-center p-8 bg-cover bg-center" style="background-image: url('https://i.ibb.co/bF0R7fJ/logogn.png'); background-blend-mode: multiply; background-color: rgba(0,0,0,0.7);">
+                <div class="animate-from-left">
+                    <h1 class="text-6xl font-bold text-gold mb-4">Genta Nada Band</h1>
+                    <p class="text-xl text-platinum mb-8">Harmoni yang Menggetarkan Jiwa</p>
+                    <a href="#about" class="btn-gold">Pelajari Lebih Lanjut</a>
+                </div>
+            </section>
+
+            <section id="about" class="section py-20 px-8 bg-gradient-to-r-custom min-h-screen flex items-center">
+                <div class="container mx-auto flex flex-col md:flex-row items-center">
+                    <div class="md:w-1/2 mb-8 md:mb-0 animate-from-left">
+                        <img src="https://i.ibb.co/Jz5N4hV/WhatsApp-Image-2024-07-20-at-06-25-32-0-1.jpg" alt="About Genta Nada" class="rounded-lg shadow-xl w-full">
+                    </div>
+                    <div class="md:w-1/2 md:pl-12 animate-from-left">
+                        <h2 class="text-5xl font-bold text-gold mb-6">Tentang Kami</h2>
+                        <p class="text-platinum leading-relaxed text-lg">
+                            Genta Nada Band adalah sebuah grup musik yang didedikasikan untuk menciptakan harmoni yang menggetarkan jiwa. Kami percaya bahwa musik adalah bahasa universal yang dapat menyatukan orang-orang dari berbagai latar belakang. Dengan perpaduan melodi yang indah dan lirik yang bermakna, kami berusaha untuk menginspirasi dan menghibur pendengar kami.
+                        </p>
+                        <p class="text-platinum leading-relaxed text-lg mt-4">
+                            Dibentuk dengan semangat persahabatan dan kecintaan pada musik, Genta Nada Band telah melewati berbagai panggung dan acara, selalu dengan tujuan untuk memberikan penampilan terbaik. Kami terus berinovasi dalam setiap karya, menjelajahi berbagai genre untuk menghadirkan pengalaman musik yang segar dan tak terlupakan.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <section id="music" class="section py-20 px-8 bg-onyx min-h-screen flex items-center">
+                <div class="container mx-auto text-center">
+                    <h2 class="text-5xl font-bold text-gold mb-12 animate-from-left">Karya Kami</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300 animate-from-left">
+                            <h3 class="text-3xl font-bold text-platinum mb-4">Judul Lagu 1</h3>
+                            <p class="text-gray-400 mb-4">Deskripsi singkat lagu ini. Menjelaskan genre atau mood.</p>
+                            <div class="aspect-w-16 aspect-h-9 mb-4">
+                                <iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=abcdefg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <a href="#" class="text-gold hover:underline">Dengarkan Lebih Lanjut</a>
+                        </div>
+                        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300 animate-from-left" style="animation-delay: 0.1s;">
+                            <h3 class="text-3xl font-bold text-platinum mb-4">Judul Lagu 2</h3>
+                            <p class="text-gray-400 mb-4">Deskripsi singkat lagu ini. Menjelaskan genre atau mood.</p>
+                            <div class="aspect-w-16 aspect-h-9 mb-4">
+                                <iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=abcdefg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <a href="#" class="text-gold hover:underline">Dengarkan Lebih Lanjut</a>
+                        </div>
+                        <div class="bg-gradient-to-br from-gray-800 to-gray-900 rounded-lg shadow-xl p-6 transform hover:scale-105 transition-transform duration-300 animate-from-left" style="animation-delay: 0.2s;">
+                            <h3 class="text-3xl font-bold text-platinum mb-4">Judul Lagu 3</h3>
+                            <p class="text-gray-400 mb-4">Deskripsi singkat lagu ini. Menjelaskan genre atau mood.</p>
+                            <div class="aspect-w-16 aspect-h-9 mb-4">
+                                <iframe class="w-full h-full rounded-lg" src="https://www.youtube.com/embed/dQw4w9WgXcQ?si=abcdefg" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                            </div>
+                            <a href="#" class="text-gold hover:underline">Dengarkan Lebih Lanjut</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="gallery" class="section py-20 px-8 bg-gradient-to-r-custom min-h-screen flex items-center">
+                <div class="container mx-auto text-center">
+                    <h2 class="text-5xl font-bold text-gold mb-12 animate-from-left">Galeri Kami</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 animate-from-left">
+                            <img src="https://i.ibb.co/3kXf26R/WhatsApp-Image-2024-07-20-at-06-25-33-0.jpg" alt="Gallery Image 1" class="w-full h-full object-cover">
+                        </div>
+                        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 animate-from-left" style="animation-delay: 0.1s;">
+                            <img src="https://i.ibb.co/gvwR10c/WhatsApp-Image-2024-07-20-at-06-25-33-1.jpg" alt="Gallery Image 2" class="w-full h-full object-cover">
+                        </div>
+                        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 animate-from-left" style="animation-delay: 0.2s;">
+                            <img src="https://i.ibb.co/rK0vC4b/WhatsApp-Image-2024-07-20-at-06-25-33-2.jpg" alt="Gallery Image 3" class="w-full h-full object-cover">
+                        </div>
+                        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 animate-from-left" style="animation-delay: 0.3s;">
+                            <img src="https://i.ibb.co/k2h0fL6/WhatsApp-Image-2024-07-20-at-06-25-33-3.jpg" alt="Gallery Image 4" class="w-full h-full object-cover">
+                        </div>
+                        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 animate-from-left" style="animation-delay: 0.4s;">
+                            <img src="https://i.ibb.co/q1z6J6Y/WhatsApp-Image-2024-07-20-at-06-25-33-4.jpg" alt="Gallery Image 5" class="w-full h-full object-cover">
+                        </div>
+                        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 animate-from-left" style="animation-delay: 0.5s;">
+                            <img src="https://i.ibb.co/K79g7Lg/WhatsApp-Image-2024-07-20-at-06-25-33-5.jpg" alt="Gallery Image 6" class="w-full h-full object-cover">
+                        </div>
+                        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 animate-from-left" style="animation-delay: 0.6s;">
+                            <img src="https://i.ibb.co/jGG0822/WhatsApp-Image-2024-07-20-at-06-25-33-6.jpg" alt="Gallery Image 7" class="w-full h-full object-cover">
+                        </div>
+                        <div class="rounded-lg overflow-hidden shadow-xl transform hover:scale-105 transition-transform duration-300 animate-from-left" style="animation-delay: 0.7s;">
+                            <img src="https://i.ibb.co/Jz5N4hV/WhatsApp-Image-2024-07-20-at-06-25-32-0-1.jpg" alt="Gallery Image 8" class="w-full h-full object-cover">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="contact" class="section py-20 px-8 bg-onyx min-h-screen flex items-center justify-center">
+                <div class="container mx-auto max-w-2xl text-center animate-from-left">
+                    <h2 class="text-5xl font-bold text-gold mb-8">Hubungi Kami</h2>
+                    <p class="text-platinum mb-8">
+                        Tertarik bergabung dengan Genta Nada Band atau ingin mengundang kami untuk tampil? Isi formulir di bawah ini dan kami akan segera menghubungi Anda!
+                    </p>
+                    <form id="registrationForm" class="bg-gradient-to-br from-gray-800 to-gray-900 p-8 rounded-lg shadow-xl">
+                        <div class="mb-6 text-left">
+                            <label for="nama" class="block text-platinum text-lg font-bold mb-2">Nama Lengkap</label>
+                            <input type="text" id="nama" name="nama" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-platinum" placeholder="Nama Lengkap Anda" required>
+                        </div>
+                        <div class="mb-6 text-left">
+                            <label for="kelas" class="block text-platinum text-lg font-bold mb-2">Kelas (Jika Pelajar)</label>
+                            <input type="text" id="kelas" name="kelas" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-platinum" placeholder="Contoh: XII IPS 1">
+                        </div>
+                        <div class="mb-6 text-left">
+                            <label for="telepon" class="block text-platinum text-lg font-bold mb-2">Nomor Telepon/WhatsApp</label>
+                            <input type="tel" id="telepon" name="telepon" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-platinum" placeholder="Contoh: 081234567890" required>
+                        </div>
+                        <div class="mb-6 text-left">
+                            <label for="gmail" class="block text-platinum text-lg font-bold mb-2">Alamat Email</label>
+                            <input type="email" id="gmail" name="gmail" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-platinum" placeholder="alamat.email@gmail.com" required>
+                        </div>
+                        <div class="mb-6 text-left">
+                            <label for="pesan" class="block text-platinum text-lg font-bold mb-2">Pesan Tambahan (Opsional)</label>
+                            <textarea id="pesan" name="pesan" rows="4" class="shadow appearance-none border rounded w-full py-3 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline bg-gray-700 border-gray-600 text-platinum" placeholder="Sampaikan pertanyaan atau kebutuhan Anda di sini..."></textarea>
+                        </div>
+                        <button type="submit" class="btn-gold w-full">Kirim Pendaftaran</button>
+                        <p id="formMessage" class="mt-4 text-sm"></p>
+                    </form>
+                </div>
+            </section>
+        </div>
+
+        <div class="text-center py-4 text-sm text-gray-500 bg-onyx" style="padding-bottom: 70px;">
+          Created By Dayzx Official 9c
+        </div>
+
+        <div class="fixed bottom-0 left-0 w-full bg-onyx border-t border-gray-700 shadow-lg z-40 md:hidden">
+            <div class="flex justify-around py-2">
+                <a data-section="home" class="nav-item flex flex-col items-center text-xs">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                    <span>Home</span>
+                </a>
+                <a data-section="about" class="nav-item flex flex-col items-center text-xs">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+                    <span>About</span>
+                </a>
+                <a data-section="music" class="nav-item flex flex-col items-center text-xs">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path d="M18 3a1 1 0 00-1.447-.894L12 4.414V3a1 1 0 00-2 0v1.414L5.447 2.106A1 1 0 004 3v14a1 1 0 001.447.894L10 15.586V17a1 1 0 002 0v-1.414l4.553 2.308A1 1 0 0018 17V3z"></path></svg>
+                    <span>Music</span>
+                </a>
+                <a data-section="gallery" class="nav-item flex flex-col items-center text-xs">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-4 3 3 5-5V15z" clip-rule="evenodd"></path></svg>
+                    <span>Gallery</span>
+                </a>
+                <a data-section="contact" class="nav-item flex flex-col items-center text-xs">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd"></path></svg>
+                    <span>Contact</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const introScreen = document.getElementById('introScreen');
+            const mainWebsite = document.getElementById('mainWebsite');
+            const navItems = document.querySelectorAll('.nav-item');
+            const sections = document.querySelectorAll('.section');
+            const createdByText = document.querySelector('.created-by-text');
+
+            const showMainContent = () => {
+                introScreen.classList.add('hidden');
+                mainWebsite.classList.add('show');
+                const initialSection = window.location.hash ? window.location.hash.substring(1) : 'home';
+                activateSection(initialSection);
+            };
+
+            const skipIntro = () => {
+                showMainContent();
+            };
+
+            // Menampilkan main content setelah 5.5 detik atau jika skipIntro dipanggil
+            setTimeout(showMainContent, 5500);
+            window.skipIntro = skipIntro; // Membuat fungsi skipIntro bisa dipanggil dari HTML
+
+            function activateSection(sectionId) {
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    section.style.display = 'none'; // Sembunyikan semua section
+                });
+                navItems.forEach(item => item.classList.remove('active'));
+
+                const targetSection = document.getElementById(sectionId);
+                const targetNavItem = document.querySelector(`.nav-item[data-section="${sectionId}"]`);
+
+                if (targetSection) {
+                    targetSection.style.display = 'block'; // Tampilkan section yang aktif
+                    setTimeout(() => {
+                        targetSection.classList.add('active'); // Tambahkan kelas 'active' setelah display block
+                    }, 10); // Sedikit delay untuk transisi
+                }
+                if (targetNavItem) {
+                    targetNavItem.classList.add('active');
+                }
+                window.location.hash = sectionId; // Perbarui URL hash
+            }
+
+            // Event listener untuk navigasi
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const sectionId = item.dataset.section;
+                    activateSection(sectionId);
+                });
+            });
+
+            // Handle hash change (misal: jika user langsung akses #about)
+            window.addEventListener('hashchange', () => {
+                const sectionId = window.location.hash ? window.location.hash.substring(1) : 'home';
+                activateSection(sectionId);
+            });
+
+            // Animasi scroll
+            const animateElements = document.querySelectorAll('.animate-from-left');
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('show');
+                    } else {
+                        entry.target.classList.remove('show');
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            animateElements.forEach(element => {
+                observer.observe(element);
+            });
+
+            // Formulir Pendaftaran (WhatsApp Link)
+            const registrationForm = document.getElementById('registrationForm');
+            const formMessage = document.getElementById('formMessage');
+            const whatsappNumber = '628882355930'; // Nomor WhatsApp tujuan untuk formulir
+
+            if (registrationForm) {
+                registrationForm.addEventListener('submit', (event) => {
+                    event.preventDefault();
+                    const nama = document.getElementById('nama').value;
+                    const kelas = document.getElementById('kelas').value;
+                    const telepon = document.getElementById('telepon').value;
+                    const gmail = document.getElementById('gmail').value;
+                    const pesan = document.getElementById('pesan').value || 'Tidak ada pesan tambahan.';
+                    const whatsappMessage = `*Pendaftaran Anggota Baru Genta Nada Band:*\n\n` +
+                                            `*Nama:* ${nama}\n` +
+                                            `*Kelas:* ${kelas}\n` +
+                                            `*Nomor Telepon:* ${telepon}\n` +
+                                            `*Gmail:* ${gmail}\n` +
+                                            `*Pesan:* ${pesan}\n\n` +
+                                            `Mohon segera ditindaklanjuti.`;
+                    const encodedMessage = encodeURIComponent(whatsappMessage);
+                    const whatsappUrl = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+                    window.open(whatsappUrl, '_blank');
+                    formMessage.textContent = 'Membuka WhatsApp dengan detail pendaftaran Anda. Mohon kirim pesan di sana.';
+                    formMessage.classList.remove('text-red-500');
+                    formMessage.classList.add('text-green-500');
+                    registrationForm.reset();
+                });
+            }
+
+            // --- KODE NOTIFIKASI KUNJUNGAN WEBSITE (MENGGUNAKAN VERCEL FUNCTION) ---
+            const reportVisit = () => {
+                // URL ini menunjuk ke Vercel Function Anda (contoh: api/report-visit.js)
+                // Tidak perlu URL lengkap seperti domain. Cukup URL relatif.
+                const serverEndpoint = '/api/report-visit'; 
+                
+                fetch(serverEndpoint, {
+                    method: 'GET', 
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error(`HTTP error! status: ${response.status}`);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Visit reported:', data.message);
+                })
+                .catch(error => {
+                    console.error('Error reporting visit:', error);
+                });
+            };
+
+            // Panggil fungsi reportVisit ketika seluruh konten HTML telah dimuat
+            reportVisit();
+            // --- AKHIR KODE NOTIFIKASI KUNJUNGAN WEBSITE ---
+
+        });
+    </script>
+
+</body>
+                          </html>
